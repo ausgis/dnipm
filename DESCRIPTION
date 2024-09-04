@@ -2,13 +2,13 @@ Package: dnipm
 Title: Deterministic Numerical Interpolation Method
 Version: 0.0.0.9000
 Authors@R: c(
+      person(given = "Zehua", family = "Zhang",
+             email = "levizhang0111@gmail.com", 
+             role = c("aut", "cph"),
+             comment = c(ORCID = "0000-0003-3462-4025")),
       person(given = "Wenbo", family = "Lv",
              email = "lyu.geosocial@gmail.com", 
-             role = c("aut", "cre", "cph"),
-             comment = c(ORCID = "0009-0002-6003-3800")),
-      person(given = "Wenbo", family = "Lv",
-             email = "lyu.geosocial@gmail.com", 
-             role = c("aut", "cre", "cph"),
+             role = c("aut", "cre"),
              comment = c(ORCID = "0009-0002-6003-3800"))  
       )
 Description: What the package does (one paragraph).
