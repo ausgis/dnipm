@@ -14,6 +14,8 @@ Authors@R: c(
 Description: What the package does (one paragraph).
 License: GPL-3
 Encoding: UTF-8
+URL: https://ausgis.github.io/dnipm/, https://github.com/ausgis/dnipm
+BugReports: https://github.com/ausgis/dnipm/issues
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Depends: 
