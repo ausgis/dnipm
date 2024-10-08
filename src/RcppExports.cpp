@@ -12,22 +12,21 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // LagrangeInterp
-double LagrangeInterp(double x, double y, Rcpp::NumericMatrix xy, Rcpp::NumericVector zs);
-RcppExport SEXP _dnipm_LagrangeInterp(SEXP xSEXP, SEXP ySEXP, SEXP xySEXP, SEXP zsSEXP) {
+Rcpp::NumericVector LagrangeInterp(Rcpp::NumericMatrix xy, Rcpp::NumericMatrix xys, Rcpp::NumericVector zs);
+RcppExport SEXP _dnipm_LagrangeInterp(SEXP xySEXP, SEXP xysSEXP, SEXP zsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type x(xSEXP);
-    Rcpp::traits::input_parameter< double >::type y(ySEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type xy(xySEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type xys(xysSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type zs(zsSEXP);
-    rcpp_result_gen = Rcpp::wrap(LagrangeInterp(x, y, xy, zs));
+    rcpp_result_gen = Rcpp::wrap(LagrangeInterp(xy, xys, zs));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_dnipm_LagrangeInterp", (DL_FUNC) &_dnipm_LagrangeInterp, 4},
+    {"_dnipm_LagrangeInterp", (DL_FUNC) &_dnipm_LagrangeInterp, 3},
     {NULL, NULL, 0}
 };
 

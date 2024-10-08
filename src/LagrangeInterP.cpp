@@ -1,30 +1,36 @@
 #include <Rcpp.h>
+#include "DNIPMUtils.h"
 using namespace Rcpp;
 
-double LagrangeBasis(double x, int i, NumericVector xs) {
-  double basis = 1.0;
-  int pn = xs.size();
-
-  // Loop through all points to calculate the basis polynomial
-  for (int j = 0; j < pn; ++j) {
-    if (j != i) {
-      basis *= (x - xs[j]) / (xs[i] - xs[j]);
+Rcpp::NumericVector LagrangeBasis(double x,
+                                  Rcpp::NumericVector xs) {
+  Rcpp::NumericVector res (xs.size(),1);
+  for(int i = 0; i < xs.size(); ++i){
+    double basis = 1.0;
+    for (int j = 0; j < xs.size(); ++j) {
+      if (j != i) {
+        basis *= (x - xs[j]) / (xs[i] - xs[j]);
+      }
     }
+    res[i] = basis;
   }
-  return basis;
+  return res;
 }
 
 // [[Rcpp::export]]
-double LagrangeInterp(double x, double y,
-                      Rcpp::NumericMatrix xy,
-                      Rcpp::NumericVector zs) {
-  double res = 0.0;
-  int n = xy.ncol();
+Rcpp::NumericVector LagrangeInterp(Rcpp::NumericMatrix xy,
+                                   Rcpp::NumericMatrix xys,
+                                   Rcpp::NumericVector zs) {
+  Rcpp::NumericVector res (xy.nrow());
 
-  for(int i = 0; i < n; ++i){
-    double Lx = LagrangeBasis(x, i ,xy(_,1));
-    double Ly = LagrangeBasis(y, i ,xy(_,2));
-    res += Lx * Ly * zs[i];
+  for (int n = 0; n < xy.nrow(); ++n){
+    double z_interp = 0.0;
+    Rcpp::NumericVector Lx = LagrangeBasis(xy(n,1),xys(_,1));
+    Rcpp::NumericVector Ly = LagrangeBasis(xy(n,2),xys(_,2));
+    for(int i = 0; i < xys.nrow(); ++i){
+      z_interp += zs[i] * Lx[i] * Ly[i];
+    }
+    res[n] = z_interp;
   }
   return res;
 }
