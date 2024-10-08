@@ -20,4 +20,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Depends: 
     R (>= 2.10)
+LinkingTo: 
+    Rcpp,
+    RcppArmadillo
 LazyData: true
