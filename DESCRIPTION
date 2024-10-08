@@ -1,5 +1,5 @@
 Package: dnipm
-Title: Deterministic Numerical Interpolation Methods
+Title: Two-Dimensional Numerical Interpolation Methods
 Version: 0.0.0.9000
 Authors@R: c(
       person(given = "Zehua", family = "Zhang",
