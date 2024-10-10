@@ -22,8 +22,8 @@ double LagrangeInterpOne(double x, double y,
                          Rcpp::NumericMatrix xys,
                          Rcpp::NumericVector zs) {
   double z_interp = 0.0;
-  Rcpp::NumericVector Lx = LagrangeBasis(x,xys(_,1));
-  Rcpp::NumericVector Ly = LagrangeBasis(y,xys(_,2));
+  Rcpp::NumericVector Lx = LagrangeBasis(x,xys(_,0));
+  Rcpp::NumericVector Ly = LagrangeBasis(y,xys(_,1));
   for(int i = 0; i < xys.nrow(); ++i){
     z_interp += zs[i] * Lx[i] * Ly[i];
   }
@@ -31,13 +31,32 @@ double LagrangeInterpOne(double x, double y,
 }
 
 // [[Rcpp::export]]
-Rcpp::NumericVector LagrangeInterp(Rcpp::NumericMatrix xy,
+Rcpp::NumericVector lagrangeInterp(Rcpp::NumericMatrix xy,
                                    Rcpp::NumericMatrix xys,
                                    Rcpp::NumericVector zs) {
   Rcpp::NumericVector res (xy.nrow());
 
   for (int n = 0; n < xy.nrow(); ++n){
-    res[n] = LagrangeInterpOne(xy(n,1),xy(n,2),xys,zs);
+    res[n] = LagrangeInterpOne(xy(n,0),xy(n,1),xys,zs);
+  }
+  return res;
+}
+
+// [[Rcpp::export]]
+Rcpp::NumericVector bilinearInterp(Rcpp::NumericMatrix xy,
+                                   Rcpp::NumericMatrix xys,
+                                   Rcpp::NumericVector zs) {
+  Rcpp::NumericVector res (xy.nrow());
+
+  for (int n = 0; n < xy.nrow(); ++n){
+    Rcpp::IntegerVector kindice = RcppKNNIndice(xy(n,0),xy(n,1),xys,2);
+    Rcpp::NumericMatrix xys_subset(kindice.size(), xys.ncol());
+    Rcpp::NumericVector zs_subset(kindice.size());
+        for (int i = 0; i < kindice.size(); ++i) {
+      xys_subset(i, Rcpp::_) = xys(kindice[i], Rcpp::_);
+      zs_subset[i] = zs[kindice[i]];
+    }
+    res[n] = LagrangeInterpOne(xy(n,0),xy(n,1),xys_subset,zs_subset);
   }
   return res;
 }
