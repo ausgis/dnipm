@@ -51,11 +51,25 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// bicubicInterp
+Rcpp::NumericVector bicubicInterp(Rcpp::NumericMatrix xy, Rcpp::NumericMatrix xys, Rcpp::NumericVector zs);
+RcppExport SEXP _dnipm_bicubicInterp(SEXP xySEXP, SEXP xysSEXP, SEXP zsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type xy(xySEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type xys(xysSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type zs(zsSEXP);
+    rcpp_result_gen = Rcpp::wrap(bicubicInterp(xy, xys, zs));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_dnipm_RcppKNNIndice", (DL_FUNC) &_dnipm_RcppKNNIndice, 4},
     {"_dnipm_lagrangeInterp", (DL_FUNC) &_dnipm_lagrangeInterp, 3},
     {"_dnipm_bilinearInterp", (DL_FUNC) &_dnipm_bilinearInterp, 3},
+    {"_dnipm_bicubicInterp", (DL_FUNC) &_dnipm_bicubicInterp, 3},
     {NULL, NULL, 0}
 };
 

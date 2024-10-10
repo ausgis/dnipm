@@ -60,3 +60,22 @@ Rcpp::NumericVector bilinearInterp(Rcpp::NumericMatrix xy,
   }
   return res;
 }
+
+// [[Rcpp::export]]
+Rcpp::NumericVector bicubicInterp(Rcpp::NumericMatrix xy,
+                                  Rcpp::NumericMatrix xys,
+                                  Rcpp::NumericVector zs) {
+  Rcpp::NumericVector res (xy.nrow());
+
+  for (int n = 0; n < xy.nrow(); ++n){
+    Rcpp::IntegerVector kindice = RcppKNNIndice(xy(n,0),xy(n,1),xys,3);
+    Rcpp::NumericMatrix xys_subset(kindice.size(), xys.ncol());
+    Rcpp::NumericVector zs_subset(kindice.size());
+    for (int i = 0; i < kindice.size(); ++i) {
+      xys_subset(i, Rcpp::_) = xys(kindice[i], Rcpp::_);
+      zs_subset[i] = zs[kindice[i]];
+    }
+    res[n] = LagrangeInterpOne(xy(n,0),xy(n,1),xys_subset,zs_subset);
+  }
+  return res;
+}

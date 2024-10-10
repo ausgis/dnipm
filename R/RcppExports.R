@@ -13,3 +13,7 @@ bilinearInterp <- function(xy, xys, zs) {
     .Call('_dnipm_bilinearInterp', PACKAGE = 'dnipm', xy, xys, zs)
 }
 
+bicubicInterp <- function(xy, xys, zs) {
+    .Call('_dnipm_bicubicInterp', PACKAGE = 'dnipm', xy, xys, zs)
+}
+
