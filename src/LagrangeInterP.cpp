@@ -3,7 +3,9 @@
 #include <algorithm>
 
 // Function to compute the Lagrange basis polynomial for a given x and y
-double lagrangeBasis(double x, double y, const Rcpp::NumericMatrix& xys, int i, int j) {
+double lagrangeBasis(double x, double y,
+                     const Rcpp::NumericMatrix& xys,
+                     int i, int j) {
   int n = xys.nrow();
   double Lij = 1.0;
 
