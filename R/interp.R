@@ -1,4 +1,4 @@
-dnipm_pd = \(z,coords,predicts,
+dnipm_pd = \(z, coords, predicts,
              method = "lagrange"){
   coords = as.matrix(coords)
   predicts = as.matrix(predicts)

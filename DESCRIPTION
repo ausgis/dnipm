@@ -11,8 +11,7 @@ Authors@R: c(
              role = c("aut", "cph"),
              comment = c(ORCID = "0000-0003-3462-4025"))
       )
-Description: Provides two-dimensional numerical interpolation methods, including lagrange, bilinear, bicubic, chebyshev, bezier, bspline, RBF, LPI and MARS interpolation, 
-for both regular and irregular grids.
+Description: Provides two-dimensional numerical interpolation methods, including lagrange, bilinear, bicubic, chebyshev, bezier, bspline, RBF, LPI and MARS interpolation, for both regular and irregular grids.
 License: GPL-3
 Encoding: UTF-8
 URL: https://ausgis.github.io/dnipm/, https://github.com/ausgis/dnipm
@@ -24,4 +23,9 @@ Depends:
 LinkingTo: 
     Rcpp,
     RcppArmadillo
+Imports: 
+    sdsfun (>= 0.6.0),
+    terra
+Remotes:
+    stscl/sdsfun
 LazyData: true
