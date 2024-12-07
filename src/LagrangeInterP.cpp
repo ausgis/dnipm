@@ -27,7 +27,8 @@ double lagrangeBasis(double x, double y,
 // [[Rcpp::export]]
 Rcpp::NumericVector lagrangeInterp(Rcpp::NumericMatrix xy,
                                    Rcpp::NumericMatrix xys,
-                                   Rcpp::NumericVector zs) {
+                                   Rcpp::NumericVector zs,
+                                   bool NA_rm = true) {
   int n = xy.nrow();
   int m = xys.nrow();
   Rcpp::NumericVector z_pred(n);
@@ -40,7 +41,13 @@ Rcpp::NumericVector lagrangeInterp(Rcpp::NumericMatrix xy,
     for (int i = 0; i < m; ++i) {
       for (int j = 0; j < m; ++j) {
         double Lij = lagrangeBasis(x, y, xys, i, j);
-        z_sum += zs[i * m + j] * Lij;
+        double z_val = zs[i * m + j];
+
+        if (Rcpp::NumericVector::is_na(z_val) & NA_rm) {
+          break;
+        } else {
+          z_sum += z_val * Lij;
+        }
       }
     }
 
@@ -49,3 +56,29 @@ Rcpp::NumericVector lagrangeInterp(Rcpp::NumericMatrix xy,
 
   return z_pred;
 }
+
+// // [[Rcpp::export]]
+// Rcpp::NumericVector lagrangeInterp(Rcpp::NumericMatrix xy,
+//                                    Rcpp::NumericMatrix xys,
+//                                    Rcpp::NumericVector zs) {
+//   int n = xy.nrow();
+//   int m = xys.nrow();
+//   Rcpp::NumericVector z_pred(n);
+//
+//   for (int p = 0; p < n; ++p) {
+//     double x = xy(p, 0);
+//     double y = xy(p, 1);
+//     double z_sum = 0.0;
+//
+//     for (int i = 0; i < m; ++i) {
+//       for (int j = 0; j < m; ++j) {
+//         double Lij = lagrangeBasis(x, y, xys, i, j);
+//         z_sum += zs[i * m + j] * Lij;
+//       }
+//     }
+//
+//     z_pred[p] = z_sum;
+//   }
+//
+//   return z_pred;
+// }

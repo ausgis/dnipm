@@ -40,15 +40,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // lagrangeInterp
-Rcpp::NumericVector lagrangeInterp(Rcpp::NumericMatrix xy, Rcpp::NumericMatrix xys, Rcpp::NumericVector zs);
-RcppExport SEXP _dnipm_lagrangeInterp(SEXP xySEXP, SEXP xysSEXP, SEXP zsSEXP) {
+Rcpp::NumericVector lagrangeInterp(Rcpp::NumericMatrix xy, Rcpp::NumericMatrix xys, Rcpp::NumericVector zs, bool NA_rm);
+RcppExport SEXP _dnipm_lagrangeInterp(SEXP xySEXP, SEXP xysSEXP, SEXP zsSEXP, SEXP NA_rmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type xy(xySEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type xys(xysSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type zs(zsSEXP);
-    rcpp_result_gen = Rcpp::wrap(lagrangeInterp(xy, xys, zs));
+    Rcpp::traits::input_parameter< bool >::type NA_rm(NA_rmSEXP);
+    rcpp_result_gen = Rcpp::wrap(lagrangeInterp(xy, xys, zs, NA_rm));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -56,7 +57,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_dnipm_bicubicInterp", (DL_FUNC) &_dnipm_bicubicInterp, 4},
     {"_dnipm_bilinearInterp", (DL_FUNC) &_dnipm_bilinearInterp, 4},
-    {"_dnipm_lagrangeInterp", (DL_FUNC) &_dnipm_lagrangeInterp, 3},
+    {"_dnipm_lagrangeInterp", (DL_FUNC) &_dnipm_lagrangeInterp, 4},
     {NULL, NULL, 0}
 };
 

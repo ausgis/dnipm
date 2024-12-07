@@ -9,7 +9,7 @@ bilinearInterp <- function(xy, xs, ys, zs) {
     .Call('_dnipm_bilinearInterp', PACKAGE = 'dnipm', xy, xs, ys, zs)
 }
 
-lagrangeInterp <- function(xy, xys, zs) {
-    .Call('_dnipm_lagrangeInterp', PACKAGE = 'dnipm', xy, xys, zs)
+lagrangeInterp <- function(xy, xys, zs, NA_rm = TRUE) {
+    .Call('_dnipm_lagrangeInterp', PACKAGE = 'dnipm', xy, xys, zs, NA_rm)
 }
 
