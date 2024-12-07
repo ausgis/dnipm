@@ -11,6 +11,20 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// bilinearInterp
+Rcpp::NumericVector bilinearInterp(Rcpp::NumericMatrix xy, Rcpp::NumericMatrix xs, Rcpp::NumericMatrix ys, Rcpp::NumericMatrix zs);
+RcppExport SEXP _dnipm_bilinearInterp(SEXP xySEXP, SEXP xsSEXP, SEXP ysSEXP, SEXP zsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type xy(xySEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type xs(xsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type ys(ysSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type zs(zsSEXP);
+    rcpp_result_gen = Rcpp::wrap(bilinearInterp(xy, xs, ys, zs));
+    return rcpp_result_gen;
+END_RCPP
+}
 // lagrangeInterp
 Rcpp::NumericVector lagrangeInterp(Rcpp::NumericMatrix xy, Rcpp::NumericMatrix xys, Rcpp::NumericVector zs);
 RcppExport SEXP _dnipm_lagrangeInterp(SEXP xySEXP, SEXP xysSEXP, SEXP zsSEXP) {
@@ -26,6 +40,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_dnipm_bilinearInterp", (DL_FUNC) &_dnipm_bilinearInterp, 4},
     {"_dnipm_lagrangeInterp", (DL_FUNC) &_dnipm_lagrangeInterp, 3},
     {NULL, NULL, 0}
 };
