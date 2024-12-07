@@ -43,7 +43,7 @@ Rcpp::NumericVector lagrangeInterp(Rcpp::NumericMatrix xy,
         double Lij = lagrangeBasis(x, y, xys, i, j);
         double z_val = zs[i * m + j];
 
-        if (Rcpp::NumericVector::is_na(z_val) & NA_rm) {
+        if (Rcpp::NumericVector::is_na(z_val) && NA_rm) {
           break;
         } else {
           z_sum += z_val * Lij;

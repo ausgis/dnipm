@@ -12,8 +12,8 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // bicubicInterp
-Rcpp::NumericVector bicubicInterp(Rcpp::NumericMatrix xy, Rcpp::NumericMatrix xs, Rcpp::NumericMatrix ys, Rcpp::NumericMatrix zs);
-RcppExport SEXP _dnipm_bicubicInterp(SEXP xySEXP, SEXP xsSEXP, SEXP ysSEXP, SEXP zsSEXP) {
+Rcpp::NumericVector bicubicInterp(Rcpp::NumericMatrix xy, Rcpp::NumericMatrix xs, Rcpp::NumericMatrix ys, Rcpp::NumericMatrix zs, bool NA_rm);
+RcppExport SEXP _dnipm_bicubicInterp(SEXP xySEXP, SEXP xsSEXP, SEXP ysSEXP, SEXP zsSEXP, SEXP NA_rmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -21,13 +21,14 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type xs(xsSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type ys(ysSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type zs(zsSEXP);
-    rcpp_result_gen = Rcpp::wrap(bicubicInterp(xy, xs, ys, zs));
+    Rcpp::traits::input_parameter< bool >::type NA_rm(NA_rmSEXP);
+    rcpp_result_gen = Rcpp::wrap(bicubicInterp(xy, xs, ys, zs, NA_rm));
     return rcpp_result_gen;
 END_RCPP
 }
 // bilinearInterp
-Rcpp::NumericVector bilinearInterp(Rcpp::NumericMatrix xy, Rcpp::NumericMatrix xs, Rcpp::NumericMatrix ys, Rcpp::NumericMatrix zs);
-RcppExport SEXP _dnipm_bilinearInterp(SEXP xySEXP, SEXP xsSEXP, SEXP ysSEXP, SEXP zsSEXP) {
+Rcpp::NumericVector bilinearInterp(Rcpp::NumericMatrix xy, Rcpp::NumericMatrix xs, Rcpp::NumericMatrix ys, Rcpp::NumericMatrix zs, bool NA_rm);
+RcppExport SEXP _dnipm_bilinearInterp(SEXP xySEXP, SEXP xsSEXP, SEXP ysSEXP, SEXP zsSEXP, SEXP NA_rmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -35,7 +36,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type xs(xsSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type ys(ysSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type zs(zsSEXP);
-    rcpp_result_gen = Rcpp::wrap(bilinearInterp(xy, xs, ys, zs));
+    Rcpp::traits::input_parameter< bool >::type NA_rm(NA_rmSEXP);
+    rcpp_result_gen = Rcpp::wrap(bilinearInterp(xy, xs, ys, zs, NA_rm));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -55,8 +57,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_dnipm_bicubicInterp", (DL_FUNC) &_dnipm_bicubicInterp, 4},
-    {"_dnipm_bilinearInterp", (DL_FUNC) &_dnipm_bilinearInterp, 4},
+    {"_dnipm_bicubicInterp", (DL_FUNC) &_dnipm_bicubicInterp, 5},
+    {"_dnipm_bilinearInterp", (DL_FUNC) &_dnipm_bilinearInterp, 5},
     {"_dnipm_lagrangeInterp", (DL_FUNC) &_dnipm_lagrangeInterp, 4},
     {NULL, NULL, 0}
 };
