@@ -1,6 +1,7 @@
 #include <Rcpp.h>
 #include <vector>
 #include <algorithm>
+#include <limits>
 
 // Function to compute the Lagrange basis polynomial for a given x and y
 double LagrangeBasisOneAxis(double x, const Rcpp::NumericVector& x_coords, int i) {
@@ -61,7 +62,7 @@ double bicubicInterpolation(double x, double y,
 
   // If NA_rm is false and there is an NA value, return NA
   if (has_na && !NA_rm) {
-    return NA_REAL;
+    return std::numeric_limits<double>::quiet_NaN();
   }
 
   // Compute the bicubic interpolation
