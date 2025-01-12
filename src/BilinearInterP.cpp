@@ -14,14 +14,15 @@ double bilinearInterpolation(double x, double y,
   int m = xs.ncol(); // Number of columns in xs
 
   // Check if x or y is out of bounds
-  if (x < xs(0, 0) || x > xs(0, m - 1) || y < ys(0, 0) || y > ys(n - 1, 0)) {
+  if (x < xs(0, 0) || x > xs(0, m - 1) || y > ys(0, 0) || y < ys(n - 1, 0)) {
+    Rcpp::Rcerr << "Ensure prediction points lie within the provided data field\n";
     return std::numeric_limits<double>::quiet_NaN(); // Return NaN if out of bounds
   }
 
   // Find the bounding indices for x and y
   int i = 0, j = 0;
-  while (i < n && ys(i, 0) < y) ++i; // Find the row index for y
-  while (j < m && xs(0, j) < x) ++j; // Find the column index for x
+  while (i < n && ys(i, 0) > y) i++; // Find the row index for y
+  while (j < m && xs(0, j) < x) j++; // Find the column index for x
 
   // Adjust indices to ensure they are within bounds
   if (i == 0) i = 1; // Ensure i is at least 1

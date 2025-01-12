@@ -25,6 +25,5 @@ LinkingTo:
     RcppArmadillo
 Imports: 
     sdsfun (>= 0.6.0),
-    terra,
     tibble
 LazyData: true
