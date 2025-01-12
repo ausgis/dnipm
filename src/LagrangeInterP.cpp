@@ -41,18 +41,16 @@ Rcpp::NumericVector lagrangeInterp(Rcpp::NumericMatrix xy,
     bool valid_interpolation = false; // Flag to track if interpolation is valid
 
     // Loop through known points to compute Lagrange basis and interpolate
-    for (int i = 0; i < m; ++i) {
-      for (int j = 0; j < m; ++j) {
-        double Lij = lagrangeBasis(x, y, xys, i, j); // Compute Lagrange basis
-        double z_val = zs[i * m + j]; // Known z-value at (i, j)
+    for (int j = 0; j < m; ++j) {
+      double Lij = lagrangeBasis(x, y, xys, j, j); // Compute Lagrange basis
+      double z_val = zs[j]; // Known z-value at (j, j)
 
-        // If z_val is NA and NA_rm is true, skip this point
-        if (Rcpp::NumericVector::is_na(z_val) && NA_rm) {
-          continue;
-        } else {
-          z_sum += z_val * Lij; // Add to the interpolation sum
-          valid_interpolation = true; // Mark interpolation as valid
-        }
+      // If z_val is NA and NA_rm is true, skip this point
+      if (Rcpp::NumericVector::is_na(z_val) && NA_rm) {
+        continue;
+      } else {
+        z_sum += z_val * Lij; // Add to the interpolation sum
+        valid_interpolation = true; // Mark interpolation as valid
       }
     }
 
@@ -64,36 +62,3 @@ Rcpp::NumericVector lagrangeInterp(Rcpp::NumericMatrix xy,
 
   return z_pred;
 }
-
-// // [[Rcpp::export]]
-// Rcpp::NumericVector lagrangeInterp(Rcpp::NumericMatrix xy,
-//                                    Rcpp::NumericMatrix xys,
-//                                    Rcpp::NumericVector zs,
-//                                    bool NA_rm = true) {
-//   int n = xy.nrow();
-//   int m = xys.nrow();
-//   Rcpp::NumericVector z_pred(n);
-//
-//   for (int p = 0; p < n; ++p) {
-//     double x = xy(p, 0);
-//     double y = xy(p, 1);
-//     double z_sum = 0.0;
-//
-//     for (int i = 0; i < m; ++i) {
-//       for (int j = 0; j < m; ++j) {
-//         double Lij = lagrangeBasis(x, y, xys, i, j);
-//         double z_val = zs[i * m + j];
-//
-//         if (Rcpp::NumericVector::is_na(z_val) && NA_rm) {
-//           break;
-//         } else {
-//           z_sum += z_val * Lij;
-//         }
-//       }
-//     }
-//
-//     z_pred[p] = z_sum;
-//   }
-//
-//   return z_pred;
-// }
