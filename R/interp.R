@@ -20,9 +20,9 @@ interp = \(z, coords, predicts, method = "lagrange", na.rm = TRUE){
   if (method == "lagrange") {
     res = lagrangeInterp(predicts,coords,z,na.rm)
   } else if (method == "bilinear") {
-    res = bilinearInterp(predicts,xyzs[[3]],xyzs[[1]],xyzs[[2]],na.rm)
+    res = bilinearInterp(predicts,xyzs[[2]],xyzs[[3]],xyzs[[1]],na.rm)
   } else if (method == "cubic") {
-    res = bicubicInterp(predicts,xyzs[[3]],xyzs[[1]],xyzs[[2]],na.rm)
+    res = bicubicInterp(predicts,xyzs[[2]],xyzs[[3]],xyzs[[1]],na.rm)
   }
   return(res)
 }
