@@ -1,21 +1,8 @@
-#include <Rcpp.h>
 #include <vector>
 #include <algorithm>
 #include <limits>
-
-// Function to compute the Lagrange basis polynomial for a given x and y
-double LagrangeBasisOneAxis(double x, const Rcpp::NumericVector& x_coords, int i) {
-  int n = x_coords.size();
-  double Li = 1.0;
-
-  for (int k = 0; k < n; ++k) {
-    if (k != i) {
-      Li *= (x - x_coords[k]) / (x_coords[i] - x_coords[k]);
-    }
-  }
-
-  return Li;
-}
+#include "lagrangeBasis.h"
+#include <Rcpp.h>
 
 // Function to compute the bicubic interpolation for a given x and y
 double bicubicInterpolation(double x, double y,
@@ -70,8 +57,8 @@ double bicubicInterpolation(double x, double y,
   for (int ii = 0; ii < 3; ++ii) {
     for (int jj = 0; jj < 3; ++jj) {
       if (!Rcpp::NumericVector::is_na(z_grid(ii, jj))) {
-        double Li = LagrangeBasisOneAxis(x, x_coords, ii);
-        double Lj = LagrangeBasisOneAxis(y, y_coords, jj);
+        double Li = lagrangeBasis(x, x_coords, ii);
+        double Lj = lagrangeBasis(y, y_coords, jj);
         z += z_grid(ii, jj) * Li * Lj;
       }
     }

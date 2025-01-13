@@ -1,38 +1,7 @@
-#include <Rcpp.h>
 #include <vector>
 #include <algorithm>
-
-// Function to compute the Lagrange basis polynomial for a given x and y
-// [[Rcpp::export]]
-double lagrangeBasis(double x, double y,
-                     const Rcpp::NumericMatrix& xys,
-                     int i) {
-  double Lij = 1.0; // Initialize the Lagrange basis value
-  int m = xys.nrow(); // Number of known points
-
-  for (int j = 0; j < m; ++j) {
-    if (j != i) {
-      double xi = xys(i, 0); // x-coordinate of the i-th known point
-      double yi = xys(i, 1); // y-coordinate of the i-th known point
-      double xj = xys(j, 0); // x-coordinate of the j-th known point
-      double yj = xys(j, 1); // y-coordinate of the j-th known point
-
-      // Check if denominator is zero
-      double denom_x = xi - xj;
-      double denom_y = yi - yj;
-
-      if (denom_x == 0 || denom_y == 0) {
-        // If denominator is zero, skip this iteration
-        continue;
-      }
-
-      // Compute the Lagrange basis
-      Lij *= (x - xj) / denom_x; // * (y - yj) / denom_y;
-    }
-  }
-
-  return Lij;
-}
+#include "lagrangeBasis.h"
+#include <Rcpp.h>
 
 // [[Rcpp::export]]
 Rcpp::NumericVector lagrangeInterp(Rcpp::NumericMatrix xy,
@@ -43,6 +12,10 @@ Rcpp::NumericVector lagrangeInterp(Rcpp::NumericMatrix xy,
   int m = xys.nrow(); // Number of known points
   Rcpp::NumericVector z_pred(n, Rcpp::NumericVector::get_na()); // Initialize z_pred with NA values
 
+  // Extract the 3x3 grid of points around (x, y)
+  Rcpp::NumericVector y_coords = xys.column(1);
+  Rcpp::NumericVector x_coords = xys.column(0);
+
   // Loop through each point to interpolate
   for (int p = 0; p < n; ++p) {
     double x = xy(p, 0); // x-coordinate of the point to interpolate
@@ -52,15 +25,15 @@ Rcpp::NumericVector lagrangeInterp(Rcpp::NumericMatrix xy,
 
     // Loop through known points to compute Lagrange basis and interpolate
     for (int j = 0; j < m; ++j) {
-      double Lij = lagrangeBasis(x, y, xys, j); // Compute Lagrange basis
-      Rcpp::Rcout << "The value of Lij : " << Lij << "\n";
+      double Li = lagrangeBasis(x, x_coords, j);
+      double Lj = lagrangeBasis(y, y_coords, j);
       double z_val = zs[j]; // Known z-value at (j, j)
 
       // If z_val is NA and NA_rm is true, skip this point
       if (Rcpp::NumericVector::is_na(z_val) && NA_rm) {
         continue;
       } else {
-        z_sum += z_val * Lij; // Add to the interpolation sum
+        z_sum += z_val * Li * Lj; // Add to the interpolation sum
         valid_interpolation = true; // Mark interpolation as valid
       }
     }
