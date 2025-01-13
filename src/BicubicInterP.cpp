@@ -28,8 +28,8 @@ double bicubicInterpolation(double x, double y,
 
   // Find the bounding indices for x and y
   int i = 0, j = 0;
-  while (i < n && xs(i, 0) < x) ++i;
-  while (j < m && ys(0, j) < y) ++j;
+  while (i < n && ys(i, 0) > y) i++;
+  while (j < m && xs(0, j) < x) j++;
 
   // Adjust indices to ensure they are within bounds
   if (i == 0) i = 1;
@@ -38,8 +38,8 @@ double bicubicInterpolation(double x, double y,
   if (j == m) j = m - 1;
 
   // Extract the 3x3 grid of points around (x, y)
-  Rcpp::NumericVector x_coords = {xs(i - 1, 0), xs(i, 0), xs(i + 1, 0)};
-  Rcpp::NumericVector y_coords = {ys(0, j - 1), ys(0, j), ys(0, j + 1)};
+  Rcpp::NumericVector y_coords = {ys(i - 1, 0), ys(i, 0), ys(i + 1, 0)};
+  Rcpp::NumericVector x_coords = {xs(0, j - 1), xs(0, j), xs(0, j + 1)};
 
   Rcpp::NumericMatrix z_grid(3, 3);
   for (int ii = 0; ii < 3; ++ii) {
