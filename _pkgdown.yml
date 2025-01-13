@@ -1,4 +1,15 @@
 url: https://ausgis.github.io/dnipm/
 template:
   bootstrap: 5
+  bootswatch: morph
+
+home:
+  title: |
+    dnipm | Two-Dimensional Numerical Interpolation Methods
+
+authors:
+  Wenbo Lv:
+    href: https://spatlyu.github.io/
+  Zehua Zhang:
+    href: https://sites.google.com/view/zehua-zhang/home
 
