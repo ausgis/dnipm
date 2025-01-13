@@ -4,7 +4,7 @@
 \alias{interp}
 \title{two-dimensional numerical interpolation}
 \usage{
-interp(z, coords, predicts, method = "lagrange", na.rm = TRUE)
+interp(z, coords, predicts, method = "bilinear", na.rm = TRUE)
 }
 \arguments{
 \item{z}{The attribute vector}
@@ -25,6 +25,7 @@ two-dimensional numerical interpolation
 }
 \examples{
 data("ndvi")
-interp(ndvi$NDVI,ndvi[,c("X","Y")],matrix(c(2745,2455),ncol = 2))
+interp(ndvi$NDVI,ndvi[,c("X","Y")],
+       matrix(c(2745,2455),ncol = 2))
 
 }

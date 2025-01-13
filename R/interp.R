@@ -11,9 +11,10 @@
 #'
 #' @examples
 #' data("ndvi")
-#' interp(ndvi$NDVI,ndvi[,c("X","Y")],matrix(c(2745,2455),ncol = 2))
+#' interp(ndvi$NDVI,ndvi[,c("X","Y")],
+#'        matrix(c(2745,2455),ncol = 2))
 #'
-interp = \(z, coords, predicts, method = "lagrange", na.rm = TRUE){
+interp = \(z, coords, predicts, method = "bilinear", na.rm = TRUE){
   predicts = as.matrix(predicts)
   coords = as.matrix(coords)
   xyzs = .xyz_vec2mat(z,coords)
