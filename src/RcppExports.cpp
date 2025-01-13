@@ -41,6 +41,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// lagrangeBasis
+double lagrangeBasis(double x, double y, const Rcpp::NumericMatrix& xys, int i);
+RcppExport SEXP _dnipm_lagrangeBasis(SEXP xSEXP, SEXP ySEXP, SEXP xysSEXP, SEXP iSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type x(xSEXP);
+    Rcpp::traits::input_parameter< double >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type xys(xysSEXP);
+    Rcpp::traits::input_parameter< int >::type i(iSEXP);
+    rcpp_result_gen = Rcpp::wrap(lagrangeBasis(x, y, xys, i));
+    return rcpp_result_gen;
+END_RCPP
+}
 // lagrangeInterp
 Rcpp::NumericVector lagrangeInterp(Rcpp::NumericMatrix xy, Rcpp::NumericMatrix xys, Rcpp::NumericVector zs, bool NA_rm);
 RcppExport SEXP _dnipm_lagrangeInterp(SEXP xySEXP, SEXP xysSEXP, SEXP zsSEXP, SEXP NA_rmSEXP) {
@@ -59,6 +73,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_dnipm_bicubicInterp", (DL_FUNC) &_dnipm_bicubicInterp, 5},
     {"_dnipm_bilinearInterp", (DL_FUNC) &_dnipm_bilinearInterp, 5},
+    {"_dnipm_lagrangeBasis", (DL_FUNC) &_dnipm_lagrangeBasis, 4},
     {"_dnipm_lagrangeInterp", (DL_FUNC) &_dnipm_lagrangeInterp, 4},
     {NULL, NULL, 0}
 };
