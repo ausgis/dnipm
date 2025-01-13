@@ -3,21 +3,31 @@
 #include <algorithm>
 
 // Function to compute the Lagrange basis polynomial for a given x and y
+// [[Rcpp::export]]
 double lagrangeBasis(double x, double y,
                      const Rcpp::NumericMatrix& xys,
-                     int i, int j) {
-  int n = xys.nrow();
-  double Lij = 1.0;
+                     int i) {
+  double Lij = 1.0; // Initialize the Lagrange basis value
+  int m = xys.nrow(); // Number of known points
 
-  for (int k = 0; k < n; ++k) {
-    if (k != i) {
-      Lij *= (x - xys(k, 0)) / (xys(i, 0) - xys(k, 0));
-    }
-  }
+  for (int j = 0; j < m; ++j) {
+    if (j != i) {
+      double xi = xys(i, 0); // x-coordinate of the i-th known point
+      double yi = xys(i, 1); // y-coordinate of the i-th known point
+      double xj = xys(j, 0); // x-coordinate of the j-th known point
+      double yj = xys(j, 1); // y-coordinate of the j-th known point
 
-  for (int k = 0; k < n; ++k) {
-    if (k != j) {
-      Lij *= (y - xys(k, 1)) / (xys(j, 1) - xys(k, 1));
+      // Check if denominator is zero
+      double denom_x = xi - xj;
+      double denom_y = yi - yj;
+
+      if (denom_x == 0 || denom_y == 0) {
+        // If denominator is zero, skip this iteration
+        continue;
+      }
+
+      // Compute the Lagrange basis
+      Lij *= (x - xj) / denom_x; // * (y - yj) / denom_y;
     }
   }
 
@@ -42,7 +52,8 @@ Rcpp::NumericVector lagrangeInterp(Rcpp::NumericMatrix xy,
 
     // Loop through known points to compute Lagrange basis and interpolate
     for (int j = 0; j < m; ++j) {
-      double Lij = lagrangeBasis(x, y, xys, j, j); // Compute Lagrange basis
+      double Lij = lagrangeBasis(x, y, xys, j); // Compute Lagrange basis
+      Rcpp::Rcout << "The value of Lij : " << Lij << "\n";
       double z_val = zs[j]; // Known z-value at (j, j)
 
       // If z_val is NA and NA_rm is true, skip this point
@@ -62,3 +73,40 @@ Rcpp::NumericVector lagrangeInterp(Rcpp::NumericMatrix xy,
 
   return z_pred;
 }
+
+// // Function to compute the Lagrange basis polynomial for a given x and y
+// // [[Rcpp::export]]
+// double lagrangeBasis(double x, double y,
+//                      const Rcpp::NumericMatrix& xys,
+//                      int j) {
+//   double Lij = 1.0; // Initialize the Lagrange basis value
+//   int m = xys.nrow(); // Number of known points
+//   bool valid_multiplication = false; // Flag to track if any valid multiplication has occurred
+//
+//   for (int k = 0; k < m; ++k) {
+//     if (k != j) {
+//       double xk = xys(k, 0); // x-coordinate of the k-th known point
+//       double yk = xys(k, 1); // y-coordinate of the k-th known point
+//
+//       // Check if denominator is zero
+//       double denom_x = xys(j, 0) - xk; // Denominator for x
+//       double denom_y = xys(j, 1) - yk; // Denominator for y
+//
+//       if (denom_x == 0 || denom_y == 0) {
+//         // If denominator is zero, skip this iteration
+//         continue;
+//       }
+//
+//       // Perform the multiplication if denominators are valid
+//       Lij *= (x - xk) / denom_x * (y - yk) / denom_y;
+//       valid_multiplication = true; // Mark that a valid multiplication has occurred
+//     }
+//   }
+//
+//   // If no valid multiplication occurred (e.g., all denominators were zero), set Lij to 0.0
+//   if (!valid_multiplication) {
+//     Lij = 0.0;
+//   }
+//
+//   return Lij;
+// }
