@@ -27,8 +27,8 @@ double bezierInterpolation(double x, double y,
   // Loop over i (columns of xs) and j (rows of ys)
   for (int i = 0; i < n; ++i) {
     for (int j = 0; j < m; ++j) {
-      double xi = xs(0, i); // x-coordinate at column i
-      double yj = ys(j, 0); // y-coordinate at row j
+      // double xi = xs(0, i); // x-coordinate at column i
+      // double yj = ys(j, 0); // y-coordinate at row j
       double zij = zs(j, i); // f(xi, yj) value at (j, i)
 
       // Skip if zij is NA and NA_rm is true
@@ -50,4 +50,22 @@ double bezierInterpolation(double x, double y,
   }
 
   return result;
+}
+
+// [[Rcpp::export]]
+Rcpp::NumericVector bezierInterp(Rcpp::NumericMatrix xy,
+                                 Rcpp::NumericMatrix xs,
+                                 Rcpp::NumericMatrix ys,
+                                 Rcpp::NumericMatrix zs,
+                                 bool NA_rm = true) {
+  int n = xy.nrow();
+  Rcpp::NumericVector z_pred(n);
+
+  for (int p = 0; p < n; ++p) {
+    double x = xy(p, 0);
+    double y = xy(p, 1);
+    z_pred[p] = bezierInterpolation(x, y, xs, ys, zs, NA_rm);
+  }
+
+  return z_pred;
 }

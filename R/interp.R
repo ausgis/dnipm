@@ -24,6 +24,8 @@ interp = \(z, coords, predicts, method = "bilinear", na.rm = TRUE){
     res = bilinearInterp(predicts,xyzs[[2]],xyzs[[3]],xyzs[[1]],na.rm)
   } else if (method == "cubic") {
     res = bicubicInterp(predicts,xyzs[[2]],xyzs[[3]],xyzs[[1]],na.rm)
+  } else if (method == "bezier") {
+    res = bezierInterp(predicts,xyzs[[2]],xyzs[[3]],xyzs[[1]],na.rm)
   }
   return(res)
 }
