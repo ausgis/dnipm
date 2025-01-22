@@ -1,4 +1,5 @@
 #include <Rcpp.h>
+#include <cmath> // for std::pow
 
 // Function to calculate binomial coefficient C(n, k)
 double binomialCoefficient(int n, int k) {
@@ -15,32 +16,37 @@ double binomialCoefficient(int n, int k) {
 
 // [[Rcpp::export]]
 double bezierInterpolation(double x, double y,
-                           Rcpp::NumericMatrix xys,
-                           Rcpp::NumericVector zs,
+                           const Rcpp::NumericMatrix& xs,
+                           const Rcpp::NumericMatrix& ys,
+                           const Rcpp::NumericMatrix& zs,
                            bool NA_rm = true) {
-  int n = xys.nrow(); // Number of rows in xys
+  int n = xs.ncol(); // Number of columns in xs (i dimension)
+  int m = ys.nrow(); // Number of rows in ys (j dimension)
   double result = 0.0;
 
+  // Loop over i (columns of xs) and j (rows of ys)
   for (int i = 0; i < n; ++i) {
-    // double xi = xys(i, 0); // x-coordinate of the i-th point
-    // double yi = xys(i, 1); // y-coordinate of the i-th point
-    double zi = zs[i];     // z-value at (xi, yi)
+    for (int j = 0; j < m; ++j) {
+      double xi = xs(0, i); // x-coordinate at column i
+      double yj = ys(j, 0); // y-coordinate at row j
+      double zij = zs(j, i); // f(xi, yj) value at (j, i)
 
-    // Skip if zi is NA and NA_rm is true
-    if (NA_rm && Rcpp::NumericVector::is_na(zi)) {
-      continue;
+      // Skip if zij is NA and NA_rm is true
+      if (NA_rm && Rcpp::NumericVector::is_na(zij)) {
+        continue;
+      }
+
+      // Calculate the binomial coefficients
+      double binom_i = binomialCoefficient(n - 1, i);
+      double binom_j = binomialCoefficient(m - 1, j);
+
+      // Calculate the polynomial terms
+      double poly_x = binom_i * std::pow(1 - x, n - i - 1) * std::pow(x, i);
+      double poly_y = binom_j * std::pow(1 - y, m - j - 1) * std::pow(y, j);
+
+      // Accumulate the result
+      result += poly_x * poly_y * zij;
     }
-
-    // Calculate the binomial coefficients
-    double binom_x = binomialCoefficient(n - 1, i);
-    double binom_y = binomialCoefficient(n - 1, i);
-
-    // Calculate the polynomial terms
-    double poly_x = binom_x * std::pow(1 - x, n - i - 1) * std::pow(x, i);
-    double poly_y = binom_y * std::pow(1 - y, n - i - 1) * std::pow(y, i);
-
-    // Accumulate the result
-    result += poly_x * poly_y * zi;
   }
 
   return result;
