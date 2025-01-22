@@ -17,6 +17,14 @@ bilinearInterp <- function(xy, xs, ys, zs, NA_rm = TRUE) {
     .Call(`_dnipm_bilinearInterp`, xy, xs, ys, zs, NA_rm)
 }
 
+bsplineInterpolation <- function(x, y, xs, ys, zs, polydegreeX, polydegreeY, NA_rm = TRUE) {
+    .Call(`_dnipm_bsplineInterpolation`, x, y, xs, ys, zs, polydegreeX, polydegreeY, NA_rm)
+}
+
+bsplineInterp <- function(xy, xs, ys, zs, polydegreeX, polydegreeY, NA_rm = TRUE) {
+    .Call(`_dnipm_bsplineInterp`, xy, xs, ys, zs, polydegreeX, polydegreeY, NA_rm)
+}
+
 lagrangeInterp <- function(xy, xys, zs, NA_rm = TRUE) {
     .Call(`_dnipm_lagrangeInterp`, xy, xys, zs, NA_rm)
 }
