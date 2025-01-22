@@ -11,6 +11,37 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// bezierInterpolation
+double bezierInterpolation(double x, double y, const Rcpp::NumericMatrix& xs, const Rcpp::NumericMatrix& ys, const Rcpp::NumericMatrix& zs, bool NA_rm);
+RcppExport SEXP _dnipm_bezierInterpolation(SEXP xSEXP, SEXP ySEXP, SEXP xsSEXP, SEXP ysSEXP, SEXP zsSEXP, SEXP NA_rmSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type x(xSEXP);
+    Rcpp::traits::input_parameter< double >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type xs(xsSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type ys(ysSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type zs(zsSEXP);
+    Rcpp::traits::input_parameter< bool >::type NA_rm(NA_rmSEXP);
+    rcpp_result_gen = Rcpp::wrap(bezierInterpolation(x, y, xs, ys, zs, NA_rm));
+    return rcpp_result_gen;
+END_RCPP
+}
+// bezierInterp
+Rcpp::NumericVector bezierInterp(Rcpp::NumericMatrix xy, Rcpp::NumericMatrix xs, Rcpp::NumericMatrix ys, Rcpp::NumericMatrix zs, bool NA_rm);
+RcppExport SEXP _dnipm_bezierInterp(SEXP xySEXP, SEXP xsSEXP, SEXP ysSEXP, SEXP zsSEXP, SEXP NA_rmSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type xy(xySEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type xs(xsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type ys(ysSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type zs(zsSEXP);
+    Rcpp::traits::input_parameter< bool >::type NA_rm(NA_rmSEXP);
+    rcpp_result_gen = Rcpp::wrap(bezierInterp(xy, xs, ys, zs, NA_rm));
+    return rcpp_result_gen;
+END_RCPP
+}
 // bicubicInterp
 Rcpp::NumericVector bicubicInterp(Rcpp::NumericMatrix xy, Rcpp::NumericMatrix xs, Rcpp::NumericMatrix ys, Rcpp::NumericMatrix zs, bool NA_rm);
 RcppExport SEXP _dnipm_bicubicInterp(SEXP xySEXP, SEXP xsSEXP, SEXP ysSEXP, SEXP zsSEXP, SEXP NA_rmSEXP) {
@@ -70,6 +101,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_dnipm_bezierInterpolation", (DL_FUNC) &_dnipm_bezierInterpolation, 6},
+    {"_dnipm_bezierInterp", (DL_FUNC) &_dnipm_bezierInterp, 5},
     {"_dnipm_bicubicInterp", (DL_FUNC) &_dnipm_bicubicInterp, 5},
     {"_dnipm_bilinearInterp", (DL_FUNC) &_dnipm_bilinearInterp, 5},
     {"_dnipm_lagrangeInterp", (DL_FUNC) &_dnipm_lagrangeInterp, 4},
