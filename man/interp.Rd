@@ -4,7 +4,7 @@
 \alias{interp}
 \title{two-dimensional numerical interpolation}
 \usage{
-interp(z, coords, predicts, method = "bilinear", na.rm = TRUE)
+interp(z, coords, predicts, method = "bilinear", polyorder = 3, na.rm = TRUE)
 }
 \arguments{
 \item{z}{The attribute vector}
@@ -14,6 +14,8 @@ interp(z, coords, predicts, method = "bilinear", na.rm = TRUE)
 \item{predicts}{Matrix of locations to predict}
 
 \item{method}{(optional) Interpolation method}
+
+\item{polyorder}{(optional) Degree of the polynomial}
 
 \item{na.rm}{(optional) Whether \code{NA} values should be stripped}
 }
